@@ -12,11 +12,14 @@
 
 // 此token必须和微信公众平台中的设置保持一致
 // 设置页面 http://mp.weixin.qq.com/cgi-bin/callbackprofile?t=wxm-callbackapi&type=info&lang=zh_CN
-define("TOKEN", "weixintoken");
+define("TOKEN", "weixintouken");
+
 
 // 此图片用于搜索出来的文章不包含图片时的默认图片，直接从wordpress的媒体库中挑一张即可。
 // 采用相对路径 
 define("DEFAULT_COVER", "/wp-content/uploads/2012/12/search_cover.png");
+
+define("WELCOME" , "欢迎关注方糖气球，我们是一个专注于技术和产品融合区域的博客，一般每周更新一次文章，您可以发送关键字获取以往的相关文章");
 
 // 假设当前wordpress的地址为http://ftqq.com，
 // 那么安装完插件后，在微信中需要填写的接口地址为http://ftqq.com/wp-content/plugins/wx-search/wx-search.php
@@ -31,9 +34,9 @@ if( isset($_REQUEST['echostr']) )
   $wechatObj->valid();
 elseif( isset( $_REQUEST['signature'] ) )
 {
-	chdir('../../../');
-	include( 'wp-load.php' );
-	$wechatObj->responseMsg();
+  chdir('../../../');
+  include( 'wp-load.php' );
+  $wechatObj->responseMsg();
 }
   
 
@@ -96,7 +99,17 @@ echo trim($xml);
 
  }else
  {
-    // 没有对应的查询结果
+   if( $keyword == 'Hello2BizUser' )
+ {?>
+<xml>
+<ToUserName><![CDATA[<?=$fromUsername?>]]></ToUserName>
+<FromUserName><![CDATA[<?=$toUsername?>]]></FromUserName>
+<CreateTime><?=time()?></CreateTime>
+<MsgType><![CDATA[text]]></MsgType>
+<Content><![CDATA[<?=WELCOME?>]]></Content>
+</xml> 
+<?php }
+else{
 ?>
 <xml>
 <ToUserName><![CDATA[<?=$fromUsername?>]]></ToUserName>
@@ -106,7 +119,7 @@ echo trim($xml);
 <Content><![CDATA[没有找到包含关键字的文章，试试其他关键字？]]></Content>
 </xml> 
 <?php
- }                
+ }  }              
                 }else{
                   echo "请输入关键字，我们将返回对应的文章...";
                 }
@@ -172,8 +185,5 @@ function thumbnail_url( $html )
 
   return false;
 }
-
-
-
 
 
