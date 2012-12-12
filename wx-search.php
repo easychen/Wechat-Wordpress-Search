@@ -85,7 +85,7 @@ class wechatCallbackapiTest
 <Articles><?php foreach( $articles as $item ): ?>
 <item> 
   <Title><![CDATA[<?=$item['title']?>]]></Title>
-  <Description><![CDATA[<?=$item['content']?>]]></Description>
+  <Description><![CDATA[<?=strip_tags($item['content'])?>]]></Description>
   <PicUrl><![CDATA[<?=$item['pic']?>]]></PicUrl>
   <Url><![CDATA[<?=$item['url']?>]]></Url>
 </item>
